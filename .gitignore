@@ -1,0 +1,33 @@
+#--- Misc -------------------------
+.DS_Store
+**/_archives
+crash.log
+logs/
+#--- Project Specific ------------------------
+data
+catalystwan.log
+requests/devices.json
+**/sdwan.log
+#--- python -------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+#------------------------------------
+.terraform
+.terraform.lock.hcl
+terraform.tfstate.backup
+terraform.tfstate
+#--- venv ---------------------------
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+#--- IDE project files --------------
+.vscode/
+*.code-workspace
+.idea
+payloads
+requests/devices.json
