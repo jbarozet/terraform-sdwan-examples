@@ -1,0 +1,17 @@
+sdwan:
+  sites:
+    - id: 1
+      routers:
+        - chassis_id: C8K-4A88C7BA-BC26-2009-F933-641392D21AB5
+          configuration_group: terraform_branch_type1
+          configuration_group_deploy: false
+          device_variables:
+            system_ip: 10.0.0.8
+            host_name: Edge8
+            site_id: 8
+            pseudo_commit_timer: 300
+            system_latitude: 48.847767
+            system_longitude: 2.337255
+            system_location: Paris
+            vpn0_default_gw1: 172.1.1.254
+            vpn0_inet_ipv4_address: 172.16.1.8

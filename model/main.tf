@@ -13,8 +13,9 @@ provider "sdwan" {
 }
 
 module "sdwan" {
-  source  = "netascode/nac-sdwan/sdwan"
-  version = "1.0.0"
+  # source = "netascode/nac-sdwan/sdwan"
+  source = "git::https://github.com/netascode/terraform-sdwan-nac-sdwan.git?ref=main"
+  # version = "1.0.0"
 
   yaml_directories = ["data/"]
 

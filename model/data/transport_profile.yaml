@@ -11,15 +11,14 @@ sdwan:
             - network_address: 0.0.0.0
               subnet_mask: 0.0.0.0
               next_hops:
-                - address: 172.16.1.254
-                - address: 172.16.2.254
+                - address_variable: vpn0_default_gw1
           ethernet_interfaces:
             - name: inet
               description: Internet Interface for primary TLOC
               interface_name: GigabitEthernet1
               interface_description: INET
               ipv4_configuration_type: static
-              ipv4_address_variable: vpn0_gi1_inet_ip
+              ipv4_address_variable: vpn0_inet_ipv4_address
               ipv4_subnet_mask: 255.255.255.0
               ipv4_nat: true
               ipv6_configuration_type: none

@@ -1,12 +1,18 @@
-# terraform-sdwan-examples/model/data/system_profile.yaml
 sdwan:
   feature_profiles:
     system_profiles:
       - name: terraform_system
         description: Terraform - System Profile
-        timezone: UTC
-        hostname_variable: system_hostname
+        hostname_variable: host_name
+        system_ip_variable: system_ip
         console_baud_rate: 9600
+        basic:
+          timezone: UTC
+          latitude_variable: system_latitude
+          longitude_variable: system_longitude
+          console_baud_rate: 9600
+          idle_timeout: 300
+          location_variable: system_location
         aaa:
           accounting:
             enable_accounting: true
@@ -17,7 +23,7 @@ sdwan:
           authentication:
             users:
               - name: admin
-                password_variable: admin_password
+                password: admin
                 privilege: 15
         banner:
           login: "Authorized access only. Unauthorized access is prohibited."
