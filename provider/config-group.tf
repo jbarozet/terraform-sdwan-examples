@@ -13,5 +13,4 @@ resource "sdwan_configuration_group" "example" {
       id = sdwan_service_feature_profile.Service_Profile.id
     }
   ]
-
 }

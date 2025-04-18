@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "sdwan" {
-  username = "jmb"
-  password = "sdwanlab123"
-  url      = "https://10.54.60.30"
+  username = local.config.manager.username
+  password = local.config.manager.password
+  url      = local.config.manager.url
 }

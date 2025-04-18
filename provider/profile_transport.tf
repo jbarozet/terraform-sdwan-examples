@@ -8,24 +8,24 @@ resource "sdwan_transport_feature_profile" "Transport_Profile" {
 
 # VPN0
 
-resource "sdwan_transport_wan_vpn_profile_parcel" "VPN0_Parcel" {
-  name                       = "VPN0"
+resource "sdwan_transport_wan_vpn_feature" "VPN0_Feature" {
+  name                       = "TF_VPN0"
   description                = "VPN0"
   feature_profile_id         = sdwan_transport_feature_profile.Transport_Profile.id
   vpn                        = 0
   enhance_ecmp_keying        = true
-  primary_dns_address_ipv4   = "172.16.1.254"
-  secondary_dns_address_ipv4 = "1.1.1.1"
+  primary_dns_address_ipv4   = local.config.transport.primary_dns_address_ipv4
+  secondary_dns_address_ipv4 = local.config.transport.secondary_dns_address_ipv4
   # primary_dns_address_ipv6   = "2001:0:0:1::0"
   # secondary_dns_address_ipv6 = "2001:0:0:2::0"
   new_host_mappings = [
     {
       host_name            = "gateway_inet"
-      list_of_ip_addresses = ["172.16.1.254"]
+      list_of_ip_addresses = [local.config.transport.gateway_inet]
     },
     {
       host_name            = "gateway_mpls"
-      list_of_ip_addresses = ["172.16.2.254"]
+      list_of_ip_addresses = [local.config.transport.gateway_mpls]
     }
   ]
   ipv4_static_routes = [
@@ -35,22 +35,11 @@ resource "sdwan_transport_wan_vpn_profile_parcel" "VPN0_Parcel" {
       gateway         = "nextHop"
       next_hops = [
         {
-          address                 = "172.16.1.254"
+          address                 = local.config.transport.gateway_inet
           administrative_distance = 1
         },
         {
-          address                 = "172.16.2.254"
-          administrative_distance = 1
-        }
-      ]
-    }
-  ]
-  ipv6_static_routes = [
-    {
-      prefix = "2002::/16"
-      next_hops = [
-        {
-          address                 = "2001:0:0:1::0"
+          address                 = local.config.transport.gateway_mpls
           administrative_distance = 1
         }
       ]
@@ -59,15 +48,16 @@ resource "sdwan_transport_wan_vpn_profile_parcel" "VPN0_Parcel" {
 }
 
 # INTERNET TRANSPORT
-resource "sdwan_transport_wan_vpn_interface_ethernet_profile_parcel" "INET_Transport" {
-  name                                           = "INET_Transport"
+resource "sdwan_transport_wan_vpn_interface_ethernet_feature" "INET_Transport" {
+  name                                           = "TF_INET_Transport"
   description                                    = "Internet Transport Interface"
   feature_profile_id                             = sdwan_transport_feature_profile.Transport_Profile.id
-  transport_wan_vpn_profile_parcel_id            = sdwan_transport_wan_vpn_profile_parcel.VPN0_Parcel.id
+  transport_wan_vpn_feature_id                   = sdwan_transport_wan_vpn_feature.VPN0_Feature.id
   shutdown                                       = false
-  interface_name                                 = "GigabitEthernet1"
+  interface_name                                 = local.config.transport.interface_inet_name
   interface_description                          = "INET TRANSPORT"
-  ipv4_address                                   = "172.16.1.1"
+  ipv4_configuration_type                        = "static"
+  ipv4_address                                   = local.config.transport.interface_inet_ip
   ipv4_subnet_mask                               = "255.255.255.0"
   auto_detect_bandwidth                          = true
   tunnel_interface                               = true
@@ -95,15 +85,16 @@ resource "sdwan_transport_wan_vpn_interface_ethernet_profile_parcel" "INET_Trans
 }
 
 # MPLS TRANSPORT
-resource "sdwan_transport_wan_vpn_interface_ethernet_profile_parcel" "MPLS_Transport" {
-  name                                           = "MLS_Transport"
+resource "sdwan_transport_wan_vpn_interface_ethernet_feature" "MPLS_Transport" {
+  name                                           = "TF_MLS_Transport"
   description                                    = "MPLS Transport Interface"
   feature_profile_id                             = sdwan_transport_feature_profile.Transport_Profile.id
-  transport_wan_vpn_profile_parcel_id            = sdwan_transport_wan_vpn_profile_parcel.VPN0_Parcel.id
+  transport_wan_vpn_feature_id                   = sdwan_transport_wan_vpn_feature.VPN0_Feature.id
   shutdown                                       = false
-  interface_name                                 = "GigabitEthernet2"
+  interface_name                                 = local.config.transport.interface_mpls_name
   interface_description                          = "MPLS TRANSPORT"
-  ipv4_address                                   = "172.16.2.1"
+  ipv4_configuration_type                        = "static"
+  ipv4_address                                   = local.config.transport.interface_mpls_ip
   ipv4_subnet_mask                               = "255.255.255.0"
   auto_detect_bandwidth                          = true
   tunnel_interface                               = true
