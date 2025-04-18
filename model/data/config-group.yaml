@@ -1,0 +1,7 @@
+sdwan:
+  configuration_groups:
+    - name: terraform_branch_type1
+      description: Terraform - Configuration Group
+      system_profile: terraform_system
+      transport_profile: terraform_transport
+      service_profile: terraform_service

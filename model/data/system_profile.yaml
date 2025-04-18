@@ -1,0 +1,45 @@
+# terraform-sdwan-examples/model/data/system_profile.yaml
+sdwan:
+  feature_profiles:
+    system_profiles:
+      - name: terraform_system
+        description: Terraform - System Profile
+        timezone: UTC
+        hostname_variable: system_hostname
+        console_baud_rate: 9600
+        aaa:
+          accounting:
+            enable_accounting: true
+            accounting_events:
+              - command
+              - system
+            accounting_server_type: radius
+          authentication:
+            users:
+              - name: admin
+                password_variable: admin_password
+                privilege: 15
+        banner:
+          login: "Authorized access only. Unauthorized access is prohibited."
+          motd: "Welcome to SD-WAN System"
+        logging:
+          disk_enable: true
+          disk_file:
+            name: log
+            size: 10
+          server:
+            - address: 10.10.10.1
+            - address: 10.10.10.2
+        ntp:
+          servers:
+            - hostname_ip: 172.16.0.11
+              prefer: true
+              source_interface: Loopback0
+              vpn_id: 10
+        omp:
+          graceful_restart: true
+          advertise:
+            bgp: true
+            ospf: true
+            connected: true
+            static: true

@@ -1,0 +1,32 @@
+sdwan:
+  feature_profiles:
+    transport_profiles:
+      - name: terraform_transport
+        description: Terraform - Transport Profile
+        wan_vpn:
+          name: wan_vpn
+          ipv4_primary_dns_address: 172.16.1.254
+          ipv4_secondary_dns_address: 172.16.2.254
+          ipv4_static_routes:
+            - network_address: 0.0.0.0
+              subnet_mask: 0.0.0.0
+              next_hops:
+                - address: 172.16.1.254
+                - address: 172.16.2.254
+          ethernet_interfaces:
+            - name: inet
+              description: Internet Interface for primary TLOC
+              interface_name: GigabitEthernet1
+              interface_description: INET
+              ipv4_configuration_type: static
+              ipv4_address_variable: vpn0_gi1_inet_ip
+              ipv4_subnet_mask: 255.255.255.0
+              ipv4_nat: true
+              ipv6_configuration_type: none
+              shutdown: false
+              tunnel_interface:
+                color: biz-internet
+                restrict: true
+                encapsulations:
+                  - encapsulation: ipsec
+                    preference: 200

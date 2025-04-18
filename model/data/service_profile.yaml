@@ -1,0 +1,48 @@
+# terraform-sdwan-examples/model/data/service_profile.yaml
+sdwan:
+  feature_profiles:
+    service_profiles:
+      - name: terraform_service
+        description: Terraform - Service Profile
+        lan_vpn:
+          name: service_vpn
+          vpn_id: 1
+          ipv4_static_routes:
+            - network_address: 10.0.0.0
+              subnet_mask: 255.0.0.0
+              next_hops:
+                - address: 10.1.1.1
+          ethernet_interfaces:
+            - name: lan
+              description: LAN Interface
+              interface_name: GigabitEthernet2
+              interface_description: LAN Interface
+              ipv4_configuration_type: static
+              ipv4_address_variable: vpn1_gi2_ip
+              ipv4_subnet_mask: 255.255.255.0
+              shutdown: false
+        security_policy:
+          zone_based_firewall:
+            zones:
+              - name: inside
+                description: Inside Zone
+              - name: outside
+                description: Outside Zone
+            zone_pairs:
+              - name: inside-to-outside
+                source_zone: inside
+                destination_zone: outside
+                firewall_action: inspect
+              - name: outside-to-inside
+                source_zone: outside
+                destination_zone: inside
+                firewall_action: inspect
+            zone_to_interfaces:
+              - zone: inside
+                vpn: 1
+                interfaces:
+                  - GigabitEthernet2
+              - zone: outside
+                vpn: 0
+                interfaces:
+                  - GigabitEthernet1
